@@ -100,6 +100,7 @@ public void saveImage(int frame_, PImage tmp_, String fileName_, String path_) {
   } else {
     actualFrame = lastFrame + 1;
   }
+  println(actualFrame);
   //Integer newframe = new Integer(frame_);
   fileName = fileName_;  
   exportpath = path_+"/"+fileName_+"/";
@@ -129,7 +130,10 @@ void export(int frame_, String name, String path) {
     sequenceTime();
     saveImage(frame_ - topSave, g.get(), path, name);
     saveInterface(export);
-    delay(4);
+    while (!bufferDone) {
+      //println("wait");
+      delay(1);
+    }
   }
 }
 
