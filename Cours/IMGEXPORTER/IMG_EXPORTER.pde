@@ -25,6 +25,7 @@ String exportpath;
 String fileName;
 String extension;
 int lastFrame;
+int actualFrame;
 
 public void initFont(float sizet, float sizep) {
 }
@@ -43,7 +44,7 @@ void initSequenceAt(int fps_)
 }
 
 public void sequenceTime() {
-  
+
   framePassed = frameCount - topSave;
   millisPassed = millis() - topMillis;
   millisToSec = millis() - topSec;
@@ -72,7 +73,7 @@ public void sequenceTime() {
   } else {
     secPassed = s;
   }
-  
+
   frame ++;
 }
 
@@ -94,17 +95,22 @@ public void saveInterface(boolean e) {
 
 public void saveImage(int frame_, PImage tmp_, String fileName_, String path_) {
   tmp = tmp_;
-
+  if (frame_ - lastFrame == 1) {
+    actualFrame = frame_;
+  } else {
+    actualFrame = lastFrame + 1;
+  }
   //Integer newframe = new Integer(frame_);
   fileName = fileName_;  
   exportpath = path_+"/"+fileName_+"/";
-  extension = "_"+frame_+".tif";
+  extension = "_"+actualFrame+".tif";
 
   Thread saveImgThread = new Thread(new Runnable() {
     public void run() {
       try {
         //save(tmp, path, 1.0);
         tmp.save(exportpath+fileName+extension); //slow because we have to make a get inside CPU
+        lastFrame = actualFrame;
         bufferDone = true;
       }
       catch (Exception ex) {
@@ -123,6 +129,7 @@ void export(int frame_, String name, String path) {
     sequenceTime();
     saveImage(frame_ - topSave, g.get(), path, name);
     saveInterface(export);
+    delay(4);
   }
 }
 
