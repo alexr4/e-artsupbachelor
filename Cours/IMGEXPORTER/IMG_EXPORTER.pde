@@ -1,8 +1,8 @@
 import com.sun.image.codec.jpeg.*;
 import java.io.*;
 //sequencer
-String exportPath = "C:/Users/bonjour/Desktop/";
-String exportFolder = "mvt5";
+String exportPath = "";
+String exportFolder = "";
 int frame = 0;
 boolean bufferDone;
 boolean export;
@@ -24,7 +24,7 @@ PImage tmp;
 String exportpath;
 String fileName;
 String extension;
-Thread saveImgThread;
+int lastFrame;
 
 public void initFont(float sizet, float sizep) {
 }
@@ -115,4 +115,20 @@ public void saveImage(int frame_, PImage tmp_, String fileName_, String path_) {
   }
   );
   saveImgThread.start();
+}
+
+void export(int frame_, String name, String path) {
+  if (export) {
+    bufferDone = false;
+    sequenceTime();
+    saveImage(frame_ - topSave, g.get(), path, name);
+    saveInterface(export);
+  }
+}
+
+void launchExport() {
+  export = !export;
+  if (export) {
+    initSequenceAt(25);
+  }
 }

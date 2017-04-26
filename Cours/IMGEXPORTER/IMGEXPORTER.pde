@@ -4,17 +4,13 @@ void setup() {
 
 void draw() {
   background(0);
-  if (export) {
-    bufferDone = false;
-    saveImage(frameCount, g.get(), "Test", "" );
-    saveInterface(export);
-  }
+
+  export(frameCount, "Test", "Hello");
 }
+
+
 void keyPressed() {
   if (key == 's' || key == 'S') {
-    export = !export;
-    if (export) {
-      initSequenceAt(25);
-    }
+    launchExport();
   }
 }
